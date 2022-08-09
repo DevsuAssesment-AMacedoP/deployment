@@ -4,7 +4,7 @@ on:
     branches:
       - "master"
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -24,7 +24,7 @@ jobs:
         id: install-kubectl
         uses: azure/setup-kubectl@v3
       - name: 'Deploy'
-        uses: 'deliverybot/helm@v1'
+        uses: 'vimeda/helm@v1.6.8'
         with:
           release: 'devsu-server'
           namespace: 'devsu'
