@@ -30,9 +30,8 @@ jobs:
           renderEngine: "helm"
           helmChart: "./devsu-server/"
           overrides: |
-            secret:
-              api_key: ${{ secrets.DEVSU_API_KEY }}
-              jwt_key: ${{ secrets.DEVSU_JWT_KEY }}
+            secret.api_key: ${{ secrets.DEVSU_API_KEY }}
+            secret.jwt_key: ${{ secrets.DEVSU_JWT_KEY }}
           helm-version: "latest"
           silent: "false"
       - name: Deploy to K8s
