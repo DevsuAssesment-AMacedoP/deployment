@@ -1,0 +1,32 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/devsuassesment-amacedop/server
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+issuer:
+  enabled: true
+  name: letsencrypt-prod
+  server: https://acme-v02.api.letsencrypt.org/directory
+  email: devsu@amacedop.xyz
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/hostname: devsu.amacedop.xyz
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+  hosts:
+    - host: devsu.amacedop.xyz
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+  - secretName: devsu-cert
+    hosts:
+      - devsu.amacedop.xyz
