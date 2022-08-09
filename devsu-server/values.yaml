@@ -3,6 +3,7 @@ replicaCount: 2
 image:
   repository: ghcr.io/devsuassesment-amacedop/server
   pullPolicy: Always
+  tag: v0.2-alpine
 
 service:
   type: ClusterIP
