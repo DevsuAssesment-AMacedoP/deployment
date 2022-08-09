@@ -3,6 +3,9 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: {{ .Values.issuer.name }}
+  labels:
+    {{- include "devsu-server.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 spec:
   acme:
     server: {{ .Values.issuer.server }}

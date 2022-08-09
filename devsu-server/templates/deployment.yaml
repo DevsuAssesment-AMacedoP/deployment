@@ -4,6 +4,7 @@ metadata:
   name: {{ include "devsu-server.fullname" . }}
   labels:
     {{- include "devsu-server.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:

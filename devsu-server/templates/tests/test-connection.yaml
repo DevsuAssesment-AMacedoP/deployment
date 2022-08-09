@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "devsu-server.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "devsu-server.fullname" . }}:{{ .Values.service.port }}/token']
   restartPolicy: Never
