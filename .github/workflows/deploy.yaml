@@ -29,6 +29,8 @@ jobs:
         with:
           renderEngine: "helm"
           helmChart: "./devsu-server/"
+          namespace: "devsu"
+          releaseName: "devsu-server"
           overrides: |
             secret.api_key: ${{ secrets.DEVSU_API_KEY }}
             secret.jwt_key: ${{ secrets.DEVSU_JWT_KEY }}
