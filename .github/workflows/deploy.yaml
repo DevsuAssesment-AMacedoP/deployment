@@ -23,6 +23,16 @@ jobs:
       - name: Setup kubectl
         id: install-kubectl
         uses: azure/setup-kubectl@v3
+      - name: Create values file
+        env:
+          DEVSU_API_KEY: ${{ secrets.DEVSU_API_KEY }}
+          DEVSU_JWT_KEY: ${{ secrets.DEVSU_JWT_KEY }}
+        run: |
+          cat <<EOF > values.yaml
+          secret:
+            api_key: "$DEVSU_API_KEY"
+            jwt_key: "$DEVSU_JWT_KEY"
+          EOF
       - name: Bake K8s manifests
         id: bake
         uses: azure/k8s-bake@v2.2
@@ -31,9 +41,7 @@ jobs:
           helmChart: "./devsu-server/"
           namespace: "devsu"
           releaseName: "devsu-server"
-          overrides: |
-            secret.api_key:${{ secrets.DEVSU_API_KEY }}
-            secret.jwt_key:${{ secrets.DEVSU_JWT_KEY }}
+          overrideFiles: "./values.yaml"
           helm-version: "latest"
           silent: "false"
       - name: Deploy to K8s
