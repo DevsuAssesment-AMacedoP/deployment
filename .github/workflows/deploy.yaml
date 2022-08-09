@@ -18,19 +18,24 @@ jobs:
         id: set-context
         uses: azure/aks-set-context@v3
         with:
-          resource-group: '${{ secrets.resource_group }}'
-          cluster-name: '${{ secrets.cluster_name }}'
+          resource-group: "${{ secrets.resource_group }}"
+          cluster-name: "${{ secrets.cluster_name }}"
       - name: Setup kubectl
         id: install-kubectl
         uses: azure/setup-kubectl@v3
-      - name: 'Deploy'
-        uses: 'vimeda/helm@v1.6.8'
+      - name: Bake K8s manifests
+        id: bake
+        uses: azure/k8s-bake@v2.2
         with:
-          release: 'devsu-server'
-          namespace: 'devsu'
-          chart: 'devsu-server'
-          token: '${{ github.token }}'
-          values: |
+          renderEngine: "helm"
+          helmChart: "./devsu-server/"
+          overrides: |
             secret:
               api_key: ${{ secrets.DEVSU_API_KEY }}
               jwt_key: ${{ secrets.DEVSU_JWT_KEY }}
+          helm-version: "latest"
+          silent: "false"
+      - name: Deploy to K8s
+        uses: Azure/k8s-deploy@v1
+        with:
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}
